@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 589420133}
   - component: {fileID: 589420132}
   m_Layer: 5
-  m_Name: Text
+  m_Name: LetterText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -283,6 +283,6 @@ MonoBehaviour:
   _colorCorrectPlace: {r: 0.37562987, g: 0.7264151, b: 0.3453898, a: 1}
   _colorContainedLetter: {r: 0.8679245, g: 0.7518701, b: 0.22435024, a: 1}
   _colorNotContainedLetter: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
-  _text: {fileID: 589420132}
   _background: {fileID: 3034749607979618912}
   _letter: 1049
+  _text: {fileID: 589420132}

@@ -15,10 +15,7 @@ public class LetterRemover : MonoBehaviour
     private void Awake()
         => _pointerEventData = new PointerEventData(_eventSystem);
 
-    private void Update()
-    {
-        CheckTap();
-    }
+    private void Update() => CheckTap();
 
     private void CheckTap()
     {

@@ -1,8 +1,10 @@
+using TMPro;
 using UnityEngine;
 
-public class KeyButton : CommonCell
+public class KeyButton : ColorChanger
 {
     [SerializeField] private char _letter;
+    [SerializeField] private TextMeshProUGUI _text;
 
     private WordTable _wordTable;
 

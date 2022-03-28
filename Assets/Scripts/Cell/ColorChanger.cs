@@ -1,15 +1,13 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CommonCell : MonoBehaviour
+public class ColorChanger : MonoBehaviour
 {
     [Header("Colors")]
     [SerializeField] protected Color _colorCorrectPlace;
     [SerializeField] private Color _colorContainedLetter;
     [SerializeField] private Color _colorNotContainedLetter;
     [Header("")]
-    [SerializeField] protected TextMeshProUGUI _text;
     [SerializeField] protected Image _background;
 
     public virtual void SetColor(ColorState colorState)

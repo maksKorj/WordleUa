@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 
 public class Word : MonoBehaviour
 {
     private Cell[] _cell;
+    private WaitForSeconds _delay = new WaitForSeconds(0.2f);
 
     public bool IsCompletedWord { get; private set; }
 
@@ -14,6 +16,7 @@ public class Word : MonoBehaviour
         {
             _cell[i] = Instantiate(cell);
             _cell[i].gameObject.transform.SetParent(transform);
+            _cell[i].gameObject.transform.localScale = Vector3.one;
         }   
     }
 
@@ -46,22 +49,24 @@ public class Word : MonoBehaviour
 
     public bool IsCorrectWord(string word, out bool isTargetWord)
     {
-        if(IsAllLetterContained() == false)
-        {
-            Debug.Log("There are empty cells!!!");
-            isTargetWord = false;
-            
-            return false;
-        }
         //TodoCheckOnContainedInListOfWords;
 
         isTargetWord = IsTargetWord(word);
 
-        for (int i = 0; i < _cell.Length; i++)
-            CheckCell(_cell[i], i, word);
+        StartCoroutine(FlipCells(word));
 
         IsCompletedWord = true;
         return true;
+    }
+
+    private IEnumerator FlipCells(string word)
+    {
+        for (int i = 0; i < _cell.Length; i++)
+        {
+            CheckCell(_cell[i], i, word);
+            yield return _delay;
+        }
+           
     }
 
     private bool IsAllLetterContained()
@@ -90,7 +95,7 @@ public class Word : MonoBehaviour
     {
         if(cell.Letter == word[index])
         {
-            cell.SetColor(ColorState.CORRECT);
+            cell.Flip(ColorState.CORRECT);
             return;
         }
 
@@ -98,11 +103,11 @@ public class Word : MonoBehaviour
         {
             if(cell.Letter == word[i])
             {
-                cell.SetColor(ColorState.CONTAINED);
+                cell.Flip(ColorState.CONTAINED);
                 return;
             }   
         }
 
-        cell.SetColor(ColorState.NOT_CONTAINED);
+        cell.Flip(ColorState.NOT_CONTAINED);
     }
 }

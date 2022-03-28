@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class WordTable : MonoBehaviour
@@ -10,6 +10,9 @@ public class WordTable : MonoBehaviour
     [Header("")]
     [SerializeField] private string _currentWord = "якнбн";
 
+    private bool _canTyping = true;
+    private WaitForSeconds _delay;
+
     private void Awake()
     {
         for (int i = 0; i < _words.Length; i++)
@@ -18,6 +21,9 @@ public class WordTable : MonoBehaviour
 
     public void AddLetterToWord(char letter, KeyButton keyButton)
     {
+        if (_canTyping == false)
+            return;
+
         for(int i = 0; i < _words.Length; i++)
         {
             if(_words[i].IsCompletedWord == false)
@@ -37,7 +43,11 @@ public class WordTable : MonoBehaviour
         {
             if (_words[i].IsCompletedWord == false)
             {
-                _words[i].IsCorrectWord(_currentWord, out bool isTargetWord);
+                if(_words[i].IsCorrectWord(_currentWord, out bool isTargetWord))
+                {
+                    _canTyping = false;
+                    StartCoroutine(WaitAndAllowToType());
+                }
 
                 if (isTargetWord)
                     Debug.Log("Win");
@@ -45,5 +55,15 @@ public class WordTable : MonoBehaviour
                 return;
             }
         }
+    }
+
+    private IEnumerator WaitAndAllowToType()
+    {
+        if (_delay == null)
+            _delay = new WaitForSeconds(_letterAmount * 0.2f + _cellPrefab.FlipTime);
+
+        yield return _delay;
+
+        _canTyping = true;
     }
 }
