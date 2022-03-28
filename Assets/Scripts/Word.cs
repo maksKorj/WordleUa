@@ -17,14 +17,16 @@ public class Word : MonoBehaviour
         }   
     }
 
-    public void AddLetterToCell(char letter, KeyButton keyButton)
+    public void AddLetterToCell(char letter, KeyButton keyButton, out bool isCompletedWord)
     {
+        isCompletedWord = false;
+
         for(int i = 0; i < _cell.Length; i++)
         {
             if(_cell[i].Letter == null)
             {
                 _cell[i].SetLetter(letter, keyButton);
-
+                isCompletedWord = (i == _cell.Length - 1);
                 return;
             }    
         }

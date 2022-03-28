@@ -1,7 +1,12 @@
+using UnityEngine;
+using DG.Tweening;
 
 public class Cell : CommonCell
 {
+    [SerializeField] private CommonCell _border;
+    
     public KeyButton KeyButton { get; private set; }
+    
     public char? Letter
     {
         get
@@ -11,8 +16,9 @@ public class Cell : CommonCell
 
             return _text.text[0];
         }
-        
     }
+
+    public bool IsPainted { get; private set; }
 
     public void SetLetter(char letter, KeyButton keyButton)
     {
@@ -24,7 +30,11 @@ public class Cell : CommonCell
 
     public override void SetColor(ColorState colorState)
     {
+        IsPainted = true;
+        
         KeyButton.SetColor(colorState);
+        _border.SetColor(colorState);
+        
         base.SetColor(colorState);
     }
 }

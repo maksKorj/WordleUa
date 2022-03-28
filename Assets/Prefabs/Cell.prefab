@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 783392281013430152}
   - component: {fileID: 5799819505000438601}
   - component: {fileID: 2241512605443243354}
+  - component: {fileID: 1862132322603361791}
   m_Layer: 5
   m_Name: Border
   m_TagString: Untagged
@@ -75,6 +76,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1862132322603361791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629290800644267949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4241563681067c147a7f52937ce93a93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colorCorrectPlace: {r: 0.3764706, g: 0.7254902, b: 0.34509805, a: 1}
+  _colorContainedLetter: {r: 0.8666667, g: 0.7529412, b: 0.22352941, a: 1}
+  _colorNotContainedLetter: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
+  _text: {fileID: 0}
+  _background: {fileID: 2241512605443243354}
 --- !u!1 &3524347767058158964
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,6 +188,7 @@ MonoBehaviour:
   _colorNotContainedLetter: {r: 0.22745098, g: 0.22745098, b: 0.23529412, a: 1}
   _text: {fileID: 6509388168841544666}
   _background: {fileID: 3524347767058158962}
+  _border: {fileID: 1862132322603361791}
 --- !u!1 &9125114001300842381
 GameObject:
   m_ObjectHideFlags: 0

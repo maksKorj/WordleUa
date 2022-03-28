@@ -22,7 +22,10 @@ public class WordTable : MonoBehaviour
         {
             if(_words[i].IsCompletedWord == false)
             {
-                _words[i].AddLetterToCell(letter, keyButton);
+                _words[i].AddLetterToCell(letter, keyButton, out bool isCompletedWord);
+                if (isCompletedWord)
+                    CheckWord();
+
                 return;
             }
         }
@@ -39,18 +42,6 @@ public class WordTable : MonoBehaviour
                 if (isTargetWord)
                     Debug.Log("Win");
 
-                return;
-            }
-        }
-    }
-
-    public void RemoveLetterFromWord()
-    {
-        for (int i = 0; i < _words.Length; i++)
-        {
-            if (_words[i].IsCompletedWord == false)
-            {
-                _words[i].RemoveLetter();
                 return;
             }
         }
