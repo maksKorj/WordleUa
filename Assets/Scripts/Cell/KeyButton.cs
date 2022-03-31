@@ -16,6 +16,7 @@ public class KeyButton : ColorChanger
         if (_wordTable == null)
             _wordTable = FindObjectOfType<WordTable>();
 
+        Vibration.VibratePop();
         _wordTable.AddLetterToWord(_letter, this);
     }
 

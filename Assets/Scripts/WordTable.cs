@@ -5,6 +5,7 @@ public class WordTable : MonoBehaviour
 {
     [SerializeField] private Cell _cellPrefab;
     [SerializeField] private Word[] _words;
+    [SerializeField] private EndPopUpStats _endPopUpStats;
     [Header("")]
     [SerializeField] private int _letterAmount = 5;
     [Header("")]
@@ -48,9 +49,23 @@ public class WordTable : MonoBehaviour
                     _canTyping = false;
                     StartCoroutine(WaitAndAllowToType());
                 }
+                else
+                {
+                    //Show animation
+                    return;
+                }
 
                 if (isTargetWord)
-                    Debug.Log("Win");
+                {
+                    StartCoroutine(WaitAndShowEndPopUp(i + 1));
+                    return;
+                }
+
+                if(i == _words.Length - 1)
+                {
+                    StartCoroutine(WaitAndShowEndPopUp(0));
+                    return;
+                }
 
                 return;
             }
@@ -59,11 +74,22 @@ public class WordTable : MonoBehaviour
 
     private IEnumerator WaitAndAllowToType()
     {
-        if (_delay == null)
-            _delay = new WaitForSeconds(_letterAmount * 0.2f + _cellPrefab.FlipTime);
-
+        CheckDelay();
         yield return _delay;
 
         _canTyping = true;
+    }
+
+    private IEnumerator WaitAndShowEndPopUp(int winAttempt)
+    {
+        CheckDelay();
+        yield return _delay;
+        _endPopUpStats.Open(winAttempt);
+    }
+
+    private void CheckDelay()
+    {
+        if (_delay == null)
+            _delay = new WaitForSeconds(_letterAmount * 0.2f + _cellPrefab.FlipTime);
     }
 }
