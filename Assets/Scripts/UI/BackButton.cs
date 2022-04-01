@@ -8,6 +8,11 @@ public class BackButton : MonoBehaviour
 
     private void Update()
     {
+        CheckBackButtonPress();
+    }
+
+    private void CheckBackButtonPress()
+    {
         if (Input.GetKeyDown(KeyCode.Escape) && _isOpen == false)
         {
             _popupAnimation.Open();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,6 +6,9 @@ public class Word : MonoBehaviour
 {
     private Cell[] _cells;
     private WaitForSeconds _delay = new WaitForSeconds(0.2f);
+    private int _tapCount = 0;
+
+    public Action OnManyTaps;
 
     public bool IsCompletedWord { get; private set; }
 
@@ -24,18 +28,41 @@ public class Word : MonoBehaviour
     {
         isCompletedWord = false;
 
-        for(int i = 0; i < _cells.Length; i++)
+        for (int i = 0; i < _cells.Length; i++)
         {
-            if(_cells[i].Letter == null)
+            if (_cells[i].Letter == null)
             {
                 _cells[i].SetLetter(letter, keyButton);
                 isCompletedWord = IsAllLetterContained();
                 return;
-            }    
+            }
+        }
+
+        ShakeCellsAndShowHint();
+    }
+
+    private void ShakeCellsAndShowHint()
+    {
+        _tapCount++;
+        if (_tapCount >= 3)
+        {
+            OnManyTaps?.Invoke();
+            _tapCount = 0;
         }
 
         for (int i = 0; i < _cells.Length; i++)
             _cells[i].Shake();
+    }
+
+    private bool IsAllLetterContained()
+    {
+        for (int i = 0; i < _cells.Length; i++)
+        {
+            if (_cells[i].Letter == null)
+                return false;
+        }
+
+        return true;
     }
 
     public void RemoveLetter()
@@ -86,18 +113,6 @@ public class Word : MonoBehaviour
             CheckCell(_cells[i], i, word);
             yield return _delay;
         }
-           
-    }
-
-    private bool IsAllLetterContained()
-    {
-        for (int i = 0; i < _cells.Length; i++)
-        {
-            if (_cells[i].Letter == null)
-                return false;
-        }
-
-        return true;
     }
 
     private bool IsTargetWord(string word)

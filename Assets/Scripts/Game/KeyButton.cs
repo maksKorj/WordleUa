@@ -8,8 +8,7 @@ public class KeyButton : ColorChanger
 
     private WordTable _wordTable;
 
-    private void Awake()
-        => _text.text = _letter.ToString().ToUpper();
+    private void Awake() => _text.text = _letter.ToString().ToUpper();
 
     public void Click()
     {

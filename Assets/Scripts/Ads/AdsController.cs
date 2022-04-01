@@ -5,7 +5,9 @@ public class AdsController : MonoBehaviour
     [SerializeField] private AdsInterstitial _adsInterstitial;
 
     private static AdsController _instance;
+    
     public static AdsController Instance => _instance;
+    public AdsInterstitial AdsInterstitial => _adsInterstitial;
 
     private void Awake() => SetUpSingelton();
 
@@ -13,7 +15,7 @@ public class AdsController : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
         else
         {
@@ -21,6 +23,4 @@ public class AdsController : MonoBehaviour
             DontDestroyOnLoad(this);
         }
     }
-
-    public AdsInterstitial AdsInterstitial => _adsInterstitial;
 }

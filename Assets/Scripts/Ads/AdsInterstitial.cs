@@ -9,7 +9,6 @@ public class AdsInterstitial : MonoBehaviour
 
     private InterstitialAd _interstitialAd;
     private int _count = 0;
-
     private Action _onAdsClosed;
 
     void Start()

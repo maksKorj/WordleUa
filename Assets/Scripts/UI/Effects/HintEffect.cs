@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class NotWordInList : MonoBehaviour
+public class HintEffect : MonoBehaviour
 {
     [SerializeField] private Vector2 _endPosition;
 
@@ -12,7 +12,7 @@ public class NotWordInList : MonoBehaviour
 
     public float AnimationTime => _scaleTime + _moveTime;
 
-    public void Show()
+    public void Play()
     {
         CheckAnimation();
 

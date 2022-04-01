@@ -3,8 +3,5 @@ using GoogleMobileAds.Api;
 
 public class AdsInitialize : MonoBehaviour
 {
-    private void Start()
-    {
-        MobileAds.Initialize(initStatus => { });
-    }
+    private void Start() => MobileAds.Initialize(initStatus => { });
 }

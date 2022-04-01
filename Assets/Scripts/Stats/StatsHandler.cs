@@ -1,15 +1,14 @@
-using System.Collections;
 using UnityEngine;
 
 public class StatsHandler : MonoBehaviour
 {
     private static StatsHandler _instance;
-    public static StatsHandler Instance => _instance;
 
     private int _gameAmount, _winPercentage, _maxWinStreak, _currentWinStreak;
     private int[] _attempts = new int[6];
 
     #region Properties
+    public static StatsHandler Instance => _instance;
     public int GameAmount => _gameAmount;
     public int WinPercentage => _winPercentage;
     public int MaxWinStreak => _maxWinStreak;
@@ -27,7 +26,7 @@ public class StatsHandler : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
         else
         {
@@ -56,7 +55,7 @@ public class StatsHandler : MonoBehaviour
             _currentWinStreak++;
 
             if (_currentWinStreak >= _maxWinStreak)
-                _maxWinStreak++;
+                _maxWinStreak = _currentWinStreak;
         }
         else
         {

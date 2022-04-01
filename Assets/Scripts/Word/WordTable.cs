@@ -6,9 +6,10 @@ public class WordTable : MonoBehaviour
     [SerializeField] private Cell _cellPrefab;
     [SerializeField] private Word[] _words;
     [Header("")]
-    [SerializeField] private EndPopUpStats _endPopUpStats;
+    [SerializeField] private EndGamePopupStats _endGamePopupStats;
     [SerializeField] private HiddenWord _hiddenWord;
-    [SerializeField] private NotWordInList _notWordInList;
+    [SerializeField] private HintEffect _wordAbsenceEffect;
+    [SerializeField] private HintEffect _removeLetterHint;
     [Header("")]
     [SerializeField] private int _letterAmount = 5;
     
@@ -19,8 +20,11 @@ public class WordTable : MonoBehaviour
     private void Awake()
     {
         for (int i = 0; i < _words.Length; i++)
+        {
             _words[i].Initialize(_cellPrefab, _letterAmount);
-
+            _words[i].OnManyTaps += () => _removeLetterHint.Play();
+        }
+            
         _currentWord = WordGiver.Instance.GetWord();
     }
 
@@ -42,6 +46,7 @@ public class WordTable : MonoBehaviour
         }
     }
 
+    private int _tapCount;
     private void CheckWord()
     {
         for (int i = 0; i < _words.Length; i++)
@@ -55,7 +60,7 @@ public class WordTable : MonoBehaviour
                 }
                 else
                 {
-                    _notWordInList.Show();
+                    _wordAbsenceEffect.Play();
                     return;
                 }
 
@@ -90,7 +95,7 @@ public class WordTable : MonoBehaviour
     {
         _canTyping = false;
         yield return new WaitForSeconds(CellAnimation + 0.7f);
-        _endPopUpStats.Open(winAttempt);
+        _endGamePopupStats.Open(winAttempt);
     }
 
     private IEnumerator WaitAndShowLosePopup()
@@ -99,7 +104,7 @@ public class WordTable : MonoBehaviour
         yield return new WaitForSeconds(CellAnimation);
         _hiddenWord.Show(_currentWord);
         yield return new WaitForSeconds(_hiddenWord.AnimationTime + 1.25f);
-        _endPopUpStats.Open(0);
+        _endGamePopupStats.Open(0);
     }
 
     private float CellAnimation => _letterAmount * 0.2f + _cellPrefab.FlipTime;

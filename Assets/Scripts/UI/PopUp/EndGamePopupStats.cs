@@ -1,5 +1,5 @@
 
-public class EndPopUpStats : PopupStats
+public class EndGamePopupStats : PopupStats
 {
     public void Open(int winAttempt)
     {
