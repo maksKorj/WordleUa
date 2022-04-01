@@ -5,12 +5,14 @@ public class WordTable : MonoBehaviour
 {
     [SerializeField] private Cell _cellPrefab;
     [SerializeField] private Word[] _words;
+    [Header("")]
     [SerializeField] private EndPopUpStats _endPopUpStats;
+    [SerializeField] private HiddenWord _hiddenWord;
+    [SerializeField] private NotWordInList _notWordInList;
     [Header("")]
     [SerializeField] private int _letterAmount = 5;
-    [Header("")]
-    [SerializeField] private string _currentWord = "якнбн";
-
+    
+    private string _currentWord = "";
     private bool _canTyping = true;
     private WaitForSeconds _delay;
 
@@ -18,6 +20,8 @@ public class WordTable : MonoBehaviour
     {
         for (int i = 0; i < _words.Length; i++)
             _words[i].Initialize(_cellPrefab, _letterAmount);
+
+        _currentWord = WordGiver.Instance.GetWord();
     }
 
     public void AddLetterToWord(char letter, KeyButton keyButton)
@@ -38,7 +42,7 @@ public class WordTable : MonoBehaviour
         }
     }
 
-    public void CheckWord()
+    private void CheckWord()
     {
         for (int i = 0; i < _words.Length; i++)
         {
@@ -51,19 +55,19 @@ public class WordTable : MonoBehaviour
                 }
                 else
                 {
-                    //Show animation
+                    _notWordInList.Show();
                     return;
                 }
 
                 if (isTargetWord)
                 {
-                    StartCoroutine(WaitAndShowEndPopUp(i + 1));
+                    StartCoroutine(WaitAndShowWinPopUp(i + 1));
                     return;
                 }
 
                 if(i == _words.Length - 1)
                 {
-                    StartCoroutine(WaitAndShowEndPopUp(0));
+                    StartCoroutine(WaitAndShowLosePopup());
                     return;
                 }
 
@@ -74,22 +78,29 @@ public class WordTable : MonoBehaviour
 
     private IEnumerator WaitAndAllowToType()
     {
-        CheckDelay();
+        if (_delay == null)
+            _delay = new WaitForSeconds(CellAnimation);
+
         yield return _delay;
 
         _canTyping = true;
     }
 
-    private IEnumerator WaitAndShowEndPopUp(int winAttempt)
+    private IEnumerator WaitAndShowWinPopUp(int winAttempt)
     {
-        CheckDelay();
-        yield return _delay;
+        _canTyping = false;
+        yield return new WaitForSeconds(CellAnimation + 0.7f);
         _endPopUpStats.Open(winAttempt);
     }
 
-    private void CheckDelay()
+    private IEnumerator WaitAndShowLosePopup()
     {
-        if (_delay == null)
-            _delay = new WaitForSeconds(_letterAmount * 0.2f + _cellPrefab.FlipTime);
+        _canTyping = false;
+        yield return new WaitForSeconds(CellAnimation);
+        _hiddenWord.Show(_currentWord);
+        yield return new WaitForSeconds(_hiddenWord.AnimationTime + 1.25f);
+        _endPopUpStats.Open(0);
     }
+
+    private float CellAnimation => _letterAmount * 0.2f + _cellPrefab.FlipTime;
 }

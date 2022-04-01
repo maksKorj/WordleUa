@@ -3,20 +3,20 @@ using UnityEngine;
 
 public class Word : MonoBehaviour
 {
-    private Cell[] _cell;
+    private Cell[] _cells;
     private WaitForSeconds _delay = new WaitForSeconds(0.2f);
 
     public bool IsCompletedWord { get; private set; }
 
     public void Initialize(Cell cell, int letterAmount)
     {
-        _cell = new Cell[letterAmount];
+        _cells = new Cell[letterAmount];
 
         for(int i = 0; i < letterAmount; i++)
         {
-            _cell[i] = Instantiate(cell);
-            _cell[i].gameObject.transform.SetParent(transform);
-            _cell[i].gameObject.transform.localScale = Vector3.one;
+            _cells[i] = Instantiate(cell);
+            _cells[i].gameObject.transform.SetParent(transform);
+            _cells[i].gameObject.transform.localScale = Vector3.one;
         }   
     }
 
@@ -24,12 +24,12 @@ public class Word : MonoBehaviour
     {
         isCompletedWord = false;
 
-        for(int i = 0; i < _cell.Length; i++)
+        for(int i = 0; i < _cells.Length; i++)
         {
-            if(_cell[i].Letter == null)
+            if(_cells[i].Letter == null)
             {
-                _cell[i].SetLetter(letter, keyButton);
-                isCompletedWord = (i == _cell.Length - 1);
+                _cells[i].SetLetter(letter, keyButton);
+                isCompletedWord = IsAllLetterContained();
                 return;
             }    
         }
@@ -37,11 +37,11 @@ public class Word : MonoBehaviour
 
     public void RemoveLetter()
     {
-        for (int i = _cell.Length - 1; i >= 0; i--)
+        for (int i = _cells.Length - 1; i >= 0; i--)
         {
-            if (_cell[i].Letter != null)
+            if (_cells[i].Letter != null)
             {
-                _cell[i].Clear();
+                _cells[i].Clear();
                 return;
             }   
         }
@@ -49,7 +49,14 @@ public class Word : MonoBehaviour
 
     public bool IsCorrectWord(string word, out bool isTargetWord)
     {
-        //TodoCheckOnContainedInListOfWords;
+        if(WordGiver.Instance.IsContainedWord(GetWrittenWord()) == false)
+        {
+            isTargetWord = false;
+            for (int i = 0; i < _cells.Length; i++)
+                _cells[i].Shake();
+
+            return false;
+        }
 
         isTargetWord = IsTargetWord(word);
 
@@ -59,11 +66,21 @@ public class Word : MonoBehaviour
         return true;
     }
 
+    private string GetWrittenWord()
+    {
+        var word = "";
+
+        for (int i = 0; i < _cells.Length; i++)
+            word += _cells[i].Letter;
+
+        return word;
+    }
+
     private IEnumerator FlipCells(string word)
     {
-        for (int i = 0; i < _cell.Length; i++)
+        for (int i = 0; i < _cells.Length; i++)
         {
-            CheckCell(_cell[i], i, word);
+            CheckCell(_cells[i], i, word);
             yield return _delay;
         }
            
@@ -71,9 +88,9 @@ public class Word : MonoBehaviour
 
     private bool IsAllLetterContained()
     {
-        for (int i = 0; i < _cell.Length; i++)
+        for (int i = 0; i < _cells.Length; i++)
         {
-            if (_cell[i].Letter == null)
+            if (_cells[i].Letter == null)
                 return false;
         }
 
@@ -82,9 +99,9 @@ public class Word : MonoBehaviour
 
     private bool IsTargetWord(string word)
     {
-        for (int i = 0; i < _cell.Length; i++)
+        for (int i = 0; i < _cells.Length; i++)
         {
-            if (_cell[i].Letter != word[i])
+            if (_cells[i].Letter != word[i])
                 return false;
         }
 

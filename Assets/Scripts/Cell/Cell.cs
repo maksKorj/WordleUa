@@ -15,6 +15,7 @@ public class Cell : ColorChanger
 
     public KeyButton KeyButton { get; private set; }
     public float FlipTime => _flipTime;
+    public float ShakeTime => _flipTime;
     
     public char? Letter
     {
@@ -63,4 +64,7 @@ public class Cell : ColorChanger
 
         base.SetColor(colorState);
     }
+
+    public void Shake()
+        => _rectTransform.DOShakeAnchorPos(_flipTime, 5f, 10, 45);
 }
