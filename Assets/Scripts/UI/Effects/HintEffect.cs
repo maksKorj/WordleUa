@@ -14,7 +14,8 @@ public class HintEffect : MonoBehaviour
 
     public void Play()
     {
-        CheckAnimation();
+        if (_sequence != null && _sequence.IsPlaying())
+            return;
 
         if (_rectTransform == null)
         {
@@ -26,15 +27,6 @@ public class HintEffect : MonoBehaviour
         _sequence.Append(_rectTransform.DOScale(Vector3.one, _scaleTime))
             .Append(_rectTransform.DOAnchorPos(_endPosition, _moveTime).SetDelay(_scaleTime))
             .Append(_rectTransform.DOScale(Vector2.zero, 0.1f).OnComplete(OnEnd).SetDelay(AnimationTime + 1f));
-    }
-
-    private void CheckAnimation()
-    {
-        if (_sequence != null && _sequence.IsPlaying())
-        {
-            _sequence.Kill();
-            OnEnd();
-        }
     }
 
     private void OnEnd()
