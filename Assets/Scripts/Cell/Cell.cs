@@ -65,6 +65,12 @@ public class Cell : ColorChanger
         base.SetColor(colorState);
     }
 
+    private Tween _shake;
     public void Shake()
-        => _rectTransform.DOShakeAnchorPos(_flipTime, 5f, 10, 45);
+    {
+        if (_shake != null && _shake.IsPlaying())
+            return;
+
+        _shake = _rectTransform.DOShakeAnchorPos(_flipTime, 5f, 10, 45);
+    }
 }

@@ -33,6 +33,9 @@ public class Word : MonoBehaviour
                 return;
             }    
         }
+
+        for (int i = 0; i < _cells.Length; i++)
+            _cells[i].Shake();
     }
 
     public void RemoveLetter()

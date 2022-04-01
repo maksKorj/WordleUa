@@ -14,6 +14,8 @@ public class NotWordInList : MonoBehaviour
 
     public void Show()
     {
+        CheckAnimation();
+
         if (_rectTransform == null)
         {
             _rectTransform = GetComponent<RectTransform>();
@@ -24,6 +26,15 @@ public class NotWordInList : MonoBehaviour
         _sequence.Append(_rectTransform.DOScale(Vector3.one, _scaleTime))
             .Append(_rectTransform.DOAnchorPos(_endPosition, _moveTime).SetDelay(_scaleTime))
             .Append(_rectTransform.DOScale(Vector2.zero, 0.1f).OnComplete(OnEnd).SetDelay(AnimationTime + 1f));
+    }
+
+    private void CheckAnimation()
+    {
+        if (_sequence != null && _sequence.IsPlaying())
+        {
+            _sequence.Kill();
+            OnEnd();
+        }
     }
 
     private void OnEnd()
